@@ -246,7 +246,7 @@
       color:#4C4C9C;
     }
 
-    /* Case grid (這裡拿來當社宅特點四格) */
+    /* Case grid（社宅特點四格） */
     .case-grid{
       display:grid;
       grid-template-columns:1fr 1fr;
@@ -336,6 +336,68 @@
     }
     .dot.active{
       background:var(--primary);
+    }
+
+    /* === RWD / LIFF 排版修正 === */
+
+    /* 讓內容區塊在手機置中、不會太窄 */
+    .page{
+      max-width:480px;
+      margin:0 auto;
+    }
+
+    /* tabs 自動換行、平均分配寬度 */
+    .tabs{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:10px;
+      padding-bottom:4px;
+    }
+    .tab{
+      flex:1 1 auto;
+      text-align:center;
+      padding:8px 12px;
+      white-space:nowrap;
+    }
+
+    /* hero 區域預留圖片空間，避免文字壓到照片 */
+    .hero{
+      position:relative;
+      padding-bottom:140px; /* 為右下角照片留空間 */
+    }
+    .hero-photo{
+      position:absolute;
+      right:12px;
+      bottom:12px;
+      width:32%;
+      max-width:140px;
+      border-radius:20px;
+      overflow:hidden;
+    }
+    .hero-subtitle,
+    .chips,
+    .hero-note{
+      max-width:60%;
+    }
+
+    /* 小螢幕再微調一下 */
+    @media (max-width:380px){
+      .hero-photo{
+        width:30%;
+      }
+      .hero-subtitle,
+      .chips,
+      .hero-note{
+        max-width:58%;
+      }
+    }
+
+    /* 四宮格在窄螢幕改成一欄，避免擠在一起 */
+    @media (max-width:390px){
+      .case-grid{
+        grid-template-columns:1fr;
+      }
     }
   </style>
 </head>
@@ -610,4 +672,3 @@
 </script>
 </body>
 </html>
-
