@@ -1,11 +1,566 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>勝仁｜總管家 × AI 行銷</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>勝仁｜總管家 × AI 行銷</title>
+
+  <style>
+    :root{
+      --primary:#6A4DFD;
+      --primary-soft:#EFE8FF;
+      --accent:#FFB400;
+      --text:#222;
+      --muted:#777;
+      --bg:#F5F5F8;
+      --radius-lg:20px;
+      --shadow:0 10px 25px rgba(0,0,0,0.12);
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    .app{
+      width:100vw;
+      height:100vh;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+    }
+
+    /* Header */
+    .app-header{
+      padding:14px 18px 8px;
+      background:white;
+      box-shadow:0 0 12px rgba(0,0,0,0.06);
+      position:relative;
+      z-index:10;
+    }
+    .app-title{
+      font-size:18px;
+      font-weight:700;
+    }
+    .app-sub{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    /* Tabs */
+    .tabs{
+      display:flex;
+      gap:8px;
+      margin-top:10px;
+      overflow-x:auto;
+      padding-bottom:4px;
+    }
+    .tab{
+      flex:0 0 auto;
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:13px;
+      border:1px solid transparent;
+      color:var(--muted);
+      cursor:pointer;
+      white-space:nowrap;
+      background:#f3f3f8;
+    }
+    .tab.active{
+      background:var(--primary);
+      color:white;
+      border-color:var(--primary);
+    }
+
+    /* Pages */
+    .pages{
+      flex:1;
+      overflow-x:auto;
+      overflow-y:hidden;
+      white-space:nowrap;
+      scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;
+    }
+    .page{
+      display:inline-block;
+      vertical-align:top;
+      width:100vw;
+      height:100%;
+      padding:18px;
+      scroll-snap-align:start;
+    }
+
+    /* Cards */
+    .card{
+      background:white;
+      border-radius:var(--radius-lg);
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+    .card + .card{margin-top:16px;}
+
+    /* Hero */
+    .hero{
+      background:radial-gradient(circle at top left,#9B7BFF,#5A35E8);
+      color:white;
+      border-radius:var(--radius-lg);
+      padding:18px;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+      min-height:240px;
+    }
+    .hero-badge{
+      font-size:11px;
+      padding:4px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.18);
+      display:inline-block;
+      margin-bottom:8px;
+    }
+    .hero-name{
+      font-size:24px;
+      font-weight:700;
+      margin-bottom:4px;
+    }
+    .hero-role{
+      font-size:14px;
+      font-weight:600;
+      margin-bottom:6px;
+    }
+    .hero-subtitle{
+      font-size:12px;
+      opacity:0.9;
+      margin-bottom:8px;
+      max-width:60%;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-bottom:10px;
+      max-width:65%;
+    }
+    .chip{
+      font-size:11px;
+      padding:4px 8px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.18);
+      border:1px solid rgba(255,255,255,0.4);
+    }
+    .hero-note{
+      font-size:11px;
+      opacity:0.8;
+      max-width:60%;
+    }
+
+    .hero-photo{
+      position:absolute;
+      right:10px;
+      bottom:10px;
+      width:38%;
+      max-width:190px;
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:0 12px 30px rgba(0,0,0,0.35);
+      background:rgba(255,255,255,0.15);
+    }
+    .hero-photo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    /* Section titles */
+    .section-title{
+      font-size:15px;
+      font-weight:700;
+      margin:4px 0 6px;
+    }
+    .section-sub{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:10px;
+    }
+    ul.list{
+      padding-left:18px;
+      margin:6px 0;
+      font-size:13px;
+      color:#444;
+    }
+    ul.list li + li{margin-top:4px;}
+
+    .tag-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:8px;
+    }
+    .tag{
+      font-size:11px;
+      padding:4px 8px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      color:#4F3AB3;
+    }
+
+    /* Buttons */
+    .btn{
+      display:block;
+      width:100%;
+      text-align:center;
+      background:var(--primary);
+      color:white;
+      text-decoration:none;
+      padding:12px;
+      border-radius:999px;
+      font-size:15px;
+      margin-top:10px;
+    }
+    .btn.secondary{
+      background:white;
+      color:var(--primary);
+      border:1px solid #DDDBFF;
+    }
+    .btn.accent{
+      background:var(--accent);
+      color:#442400;
+    }
+
+    /* Case grid */
+    .case-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:8px;
+    }
+    .case{
+      background:white;
+      border-radius:16px;
+      padding:8px;
+      font-size:11px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.06);
+    }
+    .case-img{
+      width:100%;
+      height:90px;
+      border-radius:12px;
+      background:#ddd;
+      overflow:hidden;
+      margin-bottom:6px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      font-size:10px;
+      color:#666;
+    }
+    .case-title{
+      font-weight:700;
+      margin-bottom:3px;
+    }
+    .case-note{
+      font-size:10px;
+      color:var(--muted);
+    }
+
+    /* Contact section */
+    .contact-row{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:12px;
+    }
+    .citem{
+      background:white;
+      border-radius:16px;
+      padding:10px 12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:13px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.09);
+    }
+    .citem-main{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .citem-label{
+      font-size:11px;
+      color:var(--muted);
+    }
+    .citem-value{
+      font-size:13px;
+      font-weight:600;
+    }
+    .citem a{
+      font-size:12px;
+      text-decoration:none;
+      color:var(--primary);
+    }
+
+    /* Dots */
+    .dots{
+      position:absolute;
+      bottom:8px;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      gap:6px;
+    }
+    .dot{
+      width:6px;
+      height:6px;
+      border-radius:50%;
+      background:#d0d0dd;
+    }
+    .dot.active{
+      background:var(--primary);
+    }
+  </style>
 </head>
+
 <body>
-<p>請將完整的 index.html（在 ChatGPT 提供的完整版）自行覆蓋。</p>
+<div class="app">
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="app-title">勝仁的 AI 互動名片</div>
+    <div class="app-sub">總管家 × AI 行銷 × 社宅包租代管</div>
+
+    <div class="tabs">
+      <div class="tab active" data-page="0">我的名片</div>
+      <div class="tab" data-page="1">能幫你什麼？</div>
+      <div class="tab" data-page="2">精選案例</div>
+      <div class="tab" data-page="3">快速聯絡</div>
+    </div>
+  </header>
+
+  <!-- Pages -->
+  <main class="pages" id="pages">
+
+    <!-- Page 0 -->
+    <section class="page">
+      <div class="hero">
+        <div class="hero-badge">用最不自私的方法，達到最自私的目的</div>
+        <div class="hero-name">柯勝仁</div>
+        <div class="hero-role">總管家｜襄理｜社宅包租代管顧問</div>
+        <div class="hero-subtitle">把 AI 放進房地產與商務流程，讓好點子可以快速落地與變現。</div>
+
+        <div class="chips">
+          <div class="chip">AI 數字人影片</div>
+          <div class="chip">租屋管理與社宅工具</div>
+          <div class="chip">企業內訓 & 課程設計</div>
+        </div>
+
+        <p class="hero-note">
+          如果你是房東、講師、創業者、協會或企業團隊，
+          想用 AI 提升曝光與效率，我可以幫你做到最簡單、最好上手的版本。
+        </p>
+
+        <div class="hero-photo">
+          <img src="main-profile.jpg" alt="柯勝仁 總管家襄理">
+        </div>
+      </div>
+
+      <div style="height:14px"></div>
+
+      <div class="card">
+        <div class="section-title">我正在做的事</div>
+        <div class="section-sub">一句話總結：用 AI 幫你把「故事、房子、產品」說給對的人聽。</div>
+
+        <ul class="list">
+          <li>AI 行銷流程規劃（腳本→數字人→影片→發布）</li>
+          <li>租金區間試算表、租屋管理、社宅包租代管工具開發</li>
+          <li>協助講師、商會、企業打造 AI 課程與可複製流程</li>
+        </ul>
+
+        <div class="tag-row">
+          <span class="tag">總管家實務</span>
+          <span class="tag">社宅包租代管</span>
+          <span class="tag">AI 生活應用課</span>
+          <span class="tag">AI 數字人名片</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page 1 -->
+    <section class="page">
+      <div class="card">
+        <div class="section-title">AI 行銷與課程服務</div>
+        <div class="section-sub">把你的專業變成 10 分鐘生成影片的流程。</div>
+
+        <ul class="list">
+          <li>故事行銷腳本（標題、情境、金句）</li>
+          <li>AI 數字人 / 主播影片製作（優先用免費工具）</li>
+          <li>AI 生活應用班、AI 全解班、企業內訓特製班</li>
+        </ul>
+
+        <div class="pill-row">
+          <span class="pill">企業內訓</span>
+          <span class="pill">講師合作</span>
+          <span class="pill">協會／商會活動</span>
+          <span class="pill">1 對 1 教練</span>
+        </div>
+      </div>
+
+      <div style="height:12px"></div>
+
+      <div class="card">
+        <div class="section-title">房地產 × AI 系統</div>
+        <div class="section-sub">把租屋與管理流程，全部變成自動化。</div>
+
+        <ul class="list">
+          <li>租金區間試算表、租金評分系統</li>
+          <li>租客資料管理 + LINE 自動繳租提醒</li>
+          <li>社宅包租代管申請工具 & 全流程設計</li>
+        </ul>
+
+        <div class="pill-row">
+          <span class="pill">總管家</span>
+          <span class="pill">社宅包租代管</span>
+          <span class="pill">危老與重建評估</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page 2 -->
+    <section class="page">
+      <div class="section-title">精選案例</div>
+      <div class="section-sub">以下是部分案例，可私訊索取更多。</div>
+
+      <div class="case-grid">
+
+        <div class="case">
+          <div class="case-img">AI 課程 DM</div>
+          <div class="case-title">AI 全階班 DM ＋ AI 主播影片</div>
+          <div class="case-note">從文案到影片全自動化，協助快速招生。</div>
+        </div>
+
+        <div class="case">
+          <div class="case-img">租金試算工具</div>
+          <div class="case-title">租金區間試算工具</div>
+          <div class="case-note">房東與管理端快速判斷承作條件。</div>
+        </div>
+
+        <div class="case">
+          <div class="case-img">社宅 DM</div>
+          <div class="case-title">社宅包租代管 DM</div>
+          <div class="case-note">用故事行銷方式呈現政策資訊。</div>
+        </div>
+
+        <div class="case">
+          <div class="case-img">企業內訓</div>
+          <div class="case-title">企業 AI 影音內訓</div>
+          <div class="case-note">快速建立企業產品影片庫流程。</div>
+        </div>
+
+      </div>
+
+      <a class="btn secondary" href="#" onclick="alert('更多案例可直接加 LINE 聯絡喔！');return false;">
+        想看更多案例？請私訊我
+      </a>
+    </section>
+
+    <!-- Page 3 -->
+    <section class="page">
+      <div class="card">
+        <div class="section-title">快速找到我</div>
+        <div class="section-sub">合作、課程、工具開發都可以從這裡開始。</div>
+
+        <div class="contact-row">
+
+          <div class="citem">
+            <div class="citem-main">
+              <div class="citem-label">LINE 官方帳號</div>
+              <div class="citem-value">點我加 LINE</div>
+            </div>
+            <a href="https://line.me/ti/p/40LmfznrLG" target="_blank">加入</a>
+          </div>
+
+          <div class="citem">
+            <div class="citem-main">
+              <div class="citem-label">手機</div>
+              <div class="citem-value">0919-821-208</div>
+            </div>
+            <a href="tel:0919821208">撥打</a>
+          </div>
+
+          <div class="citem">
+            <div class="citem-main">
+              <div class="citem-label">Email</div>
+              <div class="citem-value">ueue31@gmail.com</div>
+            </div>
+            <a href="mailto:ueue31@gmail.com">寫信</a>
+          </div>
+
+          <div class="citem">
+            <div class="citem-main">
+              <div class="citem-label">需求表單</div>
+              <div class="citem-value">預約諮詢 / 課程合作</div>
+            </div>
+            <a href="#" onclick="alert('之後可放 Google 表單網址');return false;">填寫</a>
+          </div>
+
+        </div>
+
+        <a class="btn accent" href="https://maps.google.com/?q=總管家" target="_blank">
+          查看總管家位置
+        </a>
+      </div>
+
+      <a class="btn" href="#" onclick="alert('未來可加入下載 vCard 功能');return false;">
+        一鍵儲存聯絡資訊（vCard）
+      </a>
+    </section>
+
+  </main>
+
+  <!-- Dots -->
+  <div class="dots">
+    <div class="dot active" data-dot="0"></div>
+    <div class="dot" data-dot="1"></div>
+    <div class="dot" data-dot="2"></div>
+    <div class="dot" data-dot="3"></div>
+  </div>
+
+</div>
+
+<script>
+  const pages = document.getElementById("pages");
+  const tabs = document.querySelectorAll(".tab");
+  const dots = document.querySelectorAll(".dot");
+
+  function goPage(i){
+    pages.scrollTo({left: i * window.innerWidth, behavior:"smooth"});
+    tabs.forEach(t=>t.classList.remove("active"));
+    dots.forEach(d=>d.classList.remove("active"));
+    tabs[i].classList.add("active");
+    dots[i].classList.add("active");
+  }
+
+  tabs.forEach(t=>{
+    t.addEventListener("click",()=>{
+      goPage(parseInt(t.dataset.page));
+    });
+  });
+
+  pages.addEventListener("scroll",()=>{
+    let i = Math.round(pages.scrollLeft / window.innerWidth);
+    tabs.forEach(t=>t.classList.remove("active"));
+    dots.forEach(d=>d.classList.remove("active"));
+    tabs[i].classList.add("active");
+    dots[i].classList.add("active");
+  });
+
+  window.addEventListener("resize",()=>{
+    let active = [...tabs].findIndex(t=>t.classList.contains("active"));
+    pages.scrollTo({left: active * window.innerWidth});
+  });
+</script>
 </body>
 </html>
