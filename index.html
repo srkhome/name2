@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>柯勝仁｜總管家 × 房地產 × 社宅包租代管</title>
+  <title>柯勝仁｜總管家 × 房地產 × 社宅包租代管名片</title>
 
   <style>
     :root{
@@ -30,6 +30,7 @@
       display:flex;
       flex-direction:column;
       overflow:hidden;
+      background:var(--bg);
     }
 
     /* Header */
@@ -75,7 +76,7 @@
       border-color:var(--primary);
     }
 
-    /* Pages */
+    /* Pages：手機版以橫向滑動方式呈現 */
     .pages{
       flex:1;
       overflow-x:auto;
@@ -112,6 +113,7 @@
       position:relative;
       overflow:hidden;
       min-height:240px;
+      padding-bottom:140px; /* 預留照片空間（手機） */
     }
     .hero-badge{
       font-size:11px;
@@ -160,11 +162,11 @@
 
     .hero-photo{
       position:absolute;
-      right:10px;
-      bottom:10px;
-      width:38%;
-      max-width:190px;
-      border-radius:24px;
+      right:12px;
+      bottom:12px;
+      width:32%;
+      max-width:140px;
+      border-radius:20px;
       overflow:hidden;
       box-shadow:0 12px 30px rgba(0,0,0,0.35);
       background:rgba(255,255,255,0.15);
@@ -246,7 +248,7 @@
       color:#4C4C9C;
     }
 
-    /* Case grid（社宅特點四格） */
+    /* Case grid（社宅四大特點） */
     .case-grid{
       display:grid;
       grid-template-columns:1fr 1fr;
@@ -338,50 +340,7 @@
       background:var(--primary);
     }
 
-    /* === RWD / LIFF 排版修正 === */
-
-    /* 讓內容區塊在手機置中、不會太窄 */
-    .page{
-      max-width:480px;
-      margin:0 auto;
-    }
-
-    /* tabs 自動換行、平均分配寬度 */
-    .tabs{
-      display:flex;
-      flex-wrap:wrap;
-      gap:6px;
-      margin-top:10px;
-      padding-bottom:4px;
-    }
-    .tab{
-      flex:1 1 auto;
-      text-align:center;
-      padding:8px 12px;
-      white-space:nowrap;
-    }
-
-    /* hero 區域預留圖片空間，避免文字壓到照片 */
-    .hero{
-      position:relative;
-      padding-bottom:140px; /* 為右下角照片留空間 */
-    }
-    .hero-photo{
-      position:absolute;
-      right:12px;
-      bottom:12px;
-      width:32%;
-      max-width:140px;
-      border-radius:20px;
-      overflow:hidden;
-    }
-    .hero-subtitle,
-    .chips,
-    .hero-note{
-      max-width:60%;
-    }
-
-    /* 小螢幕再微調一下 */
+    /* === 手機 RWD 微調 === */
     @media (max-width:380px){
       .hero-photo{
         width:30%;
@@ -391,12 +350,79 @@
       .hero-note{
         max-width:58%;
       }
-    }
-
-    /* 四宮格在窄螢幕改成一欄，避免擠在一起 */
-    @media (max-width:390px){
       .case-grid{
         grid-template-columns:1fr;
+      }
+    }
+
+    /* ================================
+       桌機版 RWD 修正版
+       ================================ */
+    @media (min-width:768px){
+      body{
+        display:flex;
+        justify-content:center;
+        align-items:stretch;
+      }
+
+      .app{
+        max-width:960px;
+        height:100vh;
+        margin:0 auto;
+        border-radius:18px;
+        box-shadow:0 0 30px rgba(0,0,0,0.08);
+        overflow:hidden;
+      }
+
+      .app-header{
+        position:sticky;
+        top:0;
+        z-index:20;
+      }
+
+      /* 桌機版改成上下捲動，不再左右滑動 */
+      .pages{
+        overflow-x:hidden !important;
+        overflow-y:auto;
+        white-space:normal !important;
+        scroll-snap-type:none !important;
+      }
+
+      .page{
+        display:block !important;
+        width:100% !important;
+        max-width:920px;
+        margin:0 auto;
+        padding:20px 28px 36px;
+      }
+
+      .dots{
+        display:none !important;
+      }
+
+      .tabs{
+        justify-content:center;
+        flex-wrap:nowrap;
+      }
+      .tab{
+        font-size:14px;
+        padding:8px 16px;
+      }
+
+      .hero{
+        padding:24px 26px 190px;
+        border-radius:22px;
+      }
+      .hero-photo{
+        width:200px !important;
+        max-width:200px !important;
+        right:24px !important;
+        bottom:24px !important;
+      }
+
+      .card{
+        max-width:900px;
+        margin:20px auto;
       }
     }
   </style>
@@ -422,7 +448,7 @@
   <main class="pages" id="pages">
 
     <!-- Page 0：個人名片 -->
-    <section class="page">
+    <section class="page" data-index="0">
       <div class="hero">
         <div class="hero-badge">用最不自私的方法，達到最自私的目的</div>
         <div class="hero-name">柯勝仁</div>
@@ -475,7 +501,7 @@
     </section>
 
     <!-- Page 1：房東可以找我做什麼 -->
-    <section class="page">
+    <section class="page" data-index="1">
       <div class="card">
         <div class="section-title">房東專業服務</div>
         <div class="section-sub">讓房東省心、省力、省麻煩的完整託管思維與流程。</div>
@@ -496,8 +522,6 @@
         </div>
       </div>
 
-      <div style="height:12px"></div>
-
       <div class="card">
         <div class="section-title">社宅包租代管顧問</div>
         <div class="section-sub">用專業協助房東判斷社宅可行性，減少踩雷、抓住優惠。</div>
@@ -505,7 +529,7 @@
         <ul class="list">
           <li>解說包租、代管方案差異與各自適合對象</li>
           <li>房東資格判斷（租金、坪數、屋齡、地點、稅務）</li>
-          <li>搭配「租金區間試算表」看你房子落在哪個區間</li>
+          <li>搭配「租金區間試算表」看你的房子落在哪個區間</li>
           <li>說明是否可能媒合弱勢戶，實務管理會遇到什麼</li>
           <li>從送件、補件、訪視到簽約，全流程實務分享</li>
         </ul>
@@ -519,7 +543,7 @@
     </section>
 
     <!-- Page 2：社宅包租代管的特點 -->
-    <section class="page">
+    <section class="page" data-index="2">
       <div class="section-title">社會住宅包租代管的四大特點</div>
       <div class="section-sub">
         給房東一個更穩定、更省心，又兼具社會責任的出租選擇。
@@ -527,7 +551,6 @@
       </div>
 
       <div class="case-grid">
-
         <div class="case">
           <div class="case-img">穩定收租</div>
           <div class="case-title">1. 租金穩定、降低空屋風險</div>
@@ -563,7 +586,6 @@
             同時幫助有需要的承租族群，是「收益＋公益」的選擇。
           </div>
         </div>
-
       </div>
 
       <a class="btn secondary" href="#"
@@ -573,7 +595,7 @@
     </section>
 
     <!-- Page 3：快速聯絡 -->
-    <section class="page">
+    <section class="page" data-index="3">
       <div class="card">
         <div class="section-title">快速找到我</div>
         <div class="section-sub">租屋、社宅包租代管、房東顧問服務，都可以從這裡開始。</div>
@@ -618,15 +640,11 @@
           查看總管家位置
         </a>
       </div>
-
-      <a class="btn" href="#" onclick="alert('未來可加入下載 vCard 功能，讓對方一鍵儲存聯絡資訊');return false;">
-        一鍵儲存聯絡資訊（vCard）
-      </a>
     </section>
 
   </main>
 
-  <!-- Dots -->
+  <!-- Dots（僅手機有用，桌機在 CSS 中已隱藏） -->
   <div class="dots">
     <div class="dot active" data-dot="0"></div>
     <div class="dot" data-dot="1"></div>
@@ -641,8 +659,20 @@
   const tabs = document.querySelectorAll(".tab");
   const dots = document.querySelectorAll(".dot");
 
+  function isMobile(){
+    return window.innerWidth < 768;
+  }
+
   function goPage(i){
-    pages.scrollTo({left: i * window.innerWidth, behavior:"smooth"});
+    const target = pages.querySelector(`.page[data-index="${i}"]`);
+    if(!target) return;
+
+    if(isMobile()){
+      pages.scrollTo({left: i * window.innerWidth, behavior:"smooth"});
+    }else{
+      target.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
     tabs.forEach(t=>t.classList.remove("active"));
     dots.forEach(d=>d.classList.remove("active"));
     if(tabs[i]) tabs[i].classList.add("active");
@@ -655,7 +685,9 @@
     });
   });
 
+  // 手機橫向滑動時，同步更新 tab / dot
   pages.addEventListener("scroll",()=>{
+    if(!isMobile()) return;
     let i = Math.round(pages.scrollLeft / window.innerWidth);
     tabs.forEach(t=>t.classList.remove("active"));
     dots.forEach(d=>d.classList.remove("active"));
@@ -664,9 +696,12 @@
   });
 
   window.addEventListener("resize",()=>{
-    let active = [...tabs].findIndex(t=>t.classList.contains("active"));
-    if(active>=0){
-      pages.scrollTo({left: active * window.innerWidth});
+    if(isMobile()){
+      // 維持目前 active tab 的橫向位置
+      let active = [...tabs].findIndex(t=>t.classList.contains("active"));
+      if(active>=0){
+        pages.scrollTo({left: active * window.innerWidth});
+      }
     }
   });
 </script>
